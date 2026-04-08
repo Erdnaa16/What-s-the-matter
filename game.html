@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 4 Module 10 Educational Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 30px 0;
+            text-align: center;
+        }
+        .stage {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: #5cb85c;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Year 4 Module 10 Educational Game</h1>
+    </header>
+    <div class="container">
+        <div class="stage" id="word-salad">
+            <h2>Word Salad Pre-Lesson</h2>
+            <p>Here is an introduction to the theme. Word Salad involves mixing up words and sentences.</p>
+            <!-- Add interactive elements here -->
+            <button onclick="nextStage('story-presentation')">Next Stage</button>
+        </div>
+        <div class="stage" id="story-presentation" style="display:none;">
+            <h2>Story Presentation</h2>
+            <p>Present the story here, engaging the students with vivid illustrations and interactive storytelling.</p>
+            <!-- Include story content and interactions -->
+            <button onclick="nextStage('practice-sentences')">Next Stage</button>
+        </div>
+        <div class="stage" id="practice-sentences" style="display:none;">
+            <h2>Practice with Sentence Writing</h2>
+            <p>Encourage students to write sentences based on the story.</p>
+            <textarea rows="4" cols="50" placeholder="Write your sentence here..."></textarea>
+            <button onclick="nextStage('snake-ladder')">Next Stage</button>
+        </div>
+        <div class="stage" id="snake-ladder" style="display:none;">
+            <h2>Snake & Ladder Board Game</h2>
+            <p>Here is a fun way to review the lesson!</p>
+            <!-- Include snake & ladder game logic here -->
+            <button onclick="trackProgress()">Complete Game</button>
+        </div>
+    </div>
+    <script>
+        function nextStage(stageId) {
+            const stages = document.querySelectorAll('.stage');
+            stages.forEach(stage => {
+                if (stage.id === stageId) {
+                    stage.style.display = 'block';
+                } else {
+                    stage.style.display = 'none';
+                }
+            });
+        }
+
+        function trackProgress() {
+            alert('Progress tracked! Thanks for playing!');
+        }
+    </script>
+</body>
+</html>
