@@ -1,94 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 4 Module 10 Educational Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        header {
-            background: #35424a;
-            color: #ffffff;
-            padding: 30px 0;
-            text-align: center;
-        }
-        .stage {
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 10px;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background: #5cb85c;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #4cae4c;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Head-Movement Health Advice Activity</title>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --soft: #475569;
+      --accent: #2563eb;
+      --good: #16a34a;
+      --bad: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+      padding: 20px;
+    }
+
+    .layout {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+
+    .camera-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0f172a;
+    }
+
+    video, canvas {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1);
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--soft);
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .option {
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 100px;
+      transition: 0.15s ease;
+    }
+
+    .option h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    .active-left .option.left,
+    .active-right .option.right {
+      border-color: var(--accent);
+      background: #eff6ff;
+      transform: translateY(-2px);
+    }
+
+    .feedback {
+      min-height: 26px;
+      font-weight: bold;
+    }
+
+    .feedback.good { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    .help {
+      font-size: 0.9rem;
+      color: var(--soft);
+      margin-top: 8px;
+    }
+
+    .pill {
+      display: inline-block;
+      border-radius: 99px;
+      background: #e2e8f0;
+      color: #1e293b;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      margin-right: 6px;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Year 4 Module 10 Educational Game</h1>
-    </header>
-    <div class="container">
-        <div class="stage" id="word-salad">
-            <h2>Word Salad Pre-Lesson</h2>
-            <p>Here is an introduction to the theme. Word Salad involves mixing up words and sentences.</p>
-            <!-- Add interactive elements here -->
-            <button onclick="nextStage('story-presentation')">Next Stage</button>
-        </div>
-        <div class="stage" id="story-presentation" style="display:none;">
-            <h2>Story Presentation</h2>
-            <p>Present the story here, engaging the students with vivid illustrations and interactive storytelling.</p>
-            <!-- Include story content and interactions -->
-            <button onclick="nextStage('practice-sentences')">Next Stage</button>
-        </div>
-        <div class="stage" id="practice-sentences" style="display:none;">
-            <h2>Practice with Sentence Writing</h2>
-            <p>Encourage students to write sentences based on the story.</p>
-            <textarea rows="4" cols="50" placeholder="Write your sentence here..."></textarea>
-            <button onclick="nextStage('snake-ladder')">Next Stage</button>
-        </div>
-        <div class="stage" id="snake-ladder" style="display:none;">
-            <h2>Snake & Ladder Board Game</h2>
-            <p>Here is a fun way to review the lesson!</p>
-            <!-- Include snake & ladder game logic here -->
-            <button onclick="trackProgress()">Complete Game</button>
-        </div>
-    </div>
-    <script>
-        function nextStage(stageId) {
-            const stages = document.querySelectorAll('.stage');
-            stages.forEach(stage => {
-                if (stage.id === stageId) {
-                    stage.style.display = 'block';
-                } else {
-                    stage.style.display = 'none';
-                }
-            });
-        }
+  <h1>Should / Shouldn't Health Advice (Head Movement Activity)</h1>
+  <p class="help">Move your head <strong>left</strong> to choose the left answer or <strong>right</strong> to choose the right answer.</p>
 
-        function trackProgress() {
-            alert('Progress tracked! Thanks for playing!');
-        }
-    </script>
+  <div class="layout">
+    <section class="card">
+      <h2>Camera & Tracking</h2>
+      <div class="camera-wrap">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="overlay"></canvas>
+      </div>
+      <div class="status" id="trackingStatus">Camera is not started.</div>
+      <div style="margin-top: 10px;">
+        <button id="startBtn">Start Camera</button>
+        <button id="stopBtn">Stop Camera</button>
+      </div>
+      <p class="help">Fallback: Use <strong>←</strong> or <strong>→</strong> on keyboard to answer if camera/face tracking is unsupported.</p>
+    </section>
+
+    <section class="card" id="quizCard">
+      <h2>Activity</h2>
+      <div class="pill" id="progressPill">Question 1 / 6</div>
+      <div class="pill" id="scorePill">Score: 0</div>
+      <div class="question" id="questionText"></div>
+
+      <div class="options" id="optionsWrap">
+        <div class="option left">
+          <h3>LEFT</h3>
+          <div id="leftOption"></div>
+        </div>
+        <div class="option right">
+          <h3>RIGHT</h3>
+          <div id="rightOption"></div>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+      <button id="nextBtn" style="display:none;">Next Question</button>
+      <button id="restartBtn" style="display:none;">Restart Activity</button>
+
+      <p class="help" id="detectorInfo">Head direction: center</p>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+  <script>
+    const questions = [
+      {
+        symptom: 'Ali has a fever.',
+        left: 'He should drink warm water and rest.',
+        right: 'He should eat lots of ice cream.',
+        correct: 'left'
+      },
+      {
+        symptom: 'Siti has a bad cough.',
+        left: 'She should talk loudly all day.',
+        right: 'She should drink warm honey lemon water.',
+        correct: 'right'
+      },
+      {
+        symptom: 'Ravi has a cold.',
+        left: 'He should stay dry and keep warm.',
+        right: 'He should play in the rain.',
+        correct: 'left'
+      },
+      {
+        symptom: 'Mina has a stomachache.',
+        left: 'She should eat spicy chips quickly.',
+        right: 'She should rest and eat light food.',
+        correct: 'right'
+      },
+      {
+        symptom: 'Ben has a toothache.',
+        left: 'He should visit a dentist.',
+        right: 'He should bite hard candy.',
+        correct: 'left'
+      },
+      {
+        symptom: 'Lina has a headache.',
+        left: 'She should sleep late and play games.',
+        right: 'She should rest in a quiet room.',
+        correct: 'right'
+      }
+    ];
+
+    const video = document.getElementById('video');
+    const overlay = document.getElementById('overlay');
+    const ctx = overlay.getContext('2d');
+
+    const trackingStatus = document.getElementById('trackingStatus');
+    const detectorInfo = document.getElementById('detectorInfo');
+    const questionText = document.getElementById('questionText');
+    const leftOption = document.getElementById('leftOption');
+    const rightOption = document.getElementById('rightOption');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const progressPill = document.getElementById('progressPill');
+    const scorePill = document.getElementById('scorePill');
+    const optionsWrap = document.getElementById('optionsWrap');
+
+    let currentIndex = 0;
+    let score = 0;
+    let locked = false;
+
+    let camera = null;
+    let faceMesh = null;
+    let holdFrames = 0;
+    let currentDirection = 'center';
+    const FRAMES_TO_SELECT = 8;
+
+    function updateQuizUI() {
+      const q = questions[currentIndex];
+      questionText.textContent = q.symptom + ' What advice is correct?';
+      leftOption.textContent = q.left;
+      rightOption.textContent = q.right;
+      progressPill.textContent = `Question ${currentIndex + 1} / ${questions.length}`;
+      scorePill.textContent = `Score: ${score}`;
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+      optionsWrap.classList.remove('active-left', 'active-right');
+      nextBtn.style.display = 'none';
+      locked = false;
+      holdFrames = 0;
+    }
+
+    function answer(direction) {
+      if (locked) return;
+      const q = questions[currentIndex];
+      locked = true;
+
+      optionsWrap.classList.toggle('active-left', direction === 'left');
+      optionsWrap.classList.toggle('active-right', direction === 'right');
+
+      if (direction === q.correct) {
+        score += 1;
+        feedback.textContent = '✅ Correct!';
+        feedback.classList.add('good');
+      } else {
+        feedback.textContent = `❌ Not quite. Correct answer: ${q[q.correct]}`;
+        feedback.classList.add('bad');
+      }
+
+      scorePill.textContent = `Score: ${score}`;
+
+      if (currentIndex < questions.length - 1) {
+        nextBtn.style.display = 'inline-block';
+      } else {
+        feedback.textContent += ` Final score: ${score}/${questions.length}.`;
+        restartBtn.style.display = 'inline-block';
+      }
+    }
+
+    function detectDirectionFromFace(landmarks) {
+      const nose = landmarks[1];
+      if (!nose) return 'center';
+
+      if (nose.x < 0.47) return 'left';
+      if (nose.x > 0.53) return 'right';
+      return 'center';
+    }
+
+    function drawNose(landmarks) {
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      const nose = landmarks[1];
+      if (!nose) return;
+      const x = nose.x * overlay.width;
+      const y = nose.y * overlay.height;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fillStyle = '#22d3ee';
+      ctx.fill();
+
+      ctx.strokeStyle = '#f8fafc';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(overlay.width * 0.47, 0);
+      ctx.lineTo(overlay.width * 0.47, overlay.height);
+      ctx.moveTo(overlay.width * 0.53, 0);
+      ctx.lineTo(overlay.width * 0.53, overlay.height);
+      ctx.stroke();
+    }
+
+    async function startCamera() {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        trackingStatus.textContent = 'Your browser does not support camera access.';
+        return;
+      }
+
+      try {
+        faceMesh = new FaceMesh({
+          locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+        });
+
+        faceMesh.setOptions({
+          maxNumFaces: 1,
+          refineLandmarks: false,
+          minDetectionConfidence: 0.6,
+          minTrackingConfidence: 0.6
+        });
+
+        faceMesh.onResults((results) => {
+          overlay.width = video.videoWidth || 640;
+          overlay.height = video.videoHeight || 480;
+          ctx.clearRect(0, 0, overlay.width, overlay.height);
+
+          if (!results.multiFaceLandmarks || !results.multiFaceLandmarks.length) {
+            detectorInfo.textContent = 'Head direction: no face detected';
+            currentDirection = 'center';
+            holdFrames = 0;
+            return;
+          }
+
+          const landmarks = results.multiFaceLandmarks[0];
+          drawNose(landmarks);
+
+          const dir = detectDirectionFromFace(landmarks);
+          detectorInfo.textContent = `Head direction: ${dir}`;
+
+          optionsWrap.classList.toggle('active-left', !locked && dir === 'left');
+          optionsWrap.classList.toggle('active-right', !locked && dir === 'right');
+
+          if (!locked && (dir === 'left' || dir === 'right')) {
+            if (dir === currentDirection) {
+              holdFrames += 1;
+            } else {
+              currentDirection = dir;
+              holdFrames = 1;
+            }
+
+            if (holdFrames >= FRAMES_TO_SELECT) {
+              answer(dir);
+              holdFrames = 0;
+            }
+          } else {
+            holdFrames = 0;
+            currentDirection = dir;
+          }
+        });
+
+        camera = new Camera(video, {
+          onFrame: async () => {
+            await faceMesh.send({ image: video });
+          },
+          width: 640,
+          height: 480
+        });
+
+        await camera.start();
+        trackingStatus.textContent = 'Camera started. Keep your face in view and tilt left/right to answer.';
+      } catch (error) {
+        trackingStatus.textContent = 'Unable to start face tracking. Use keyboard arrows as fallback.';
+        console.error(error);
+      }
+    }
+
+    function stopCamera() {
+      if (camera) {
+        camera.stop();
+        camera = null;
+      }
+      ctx.clearRect(0, 0, overlay.width, overlay.height);
+      trackingStatus.textContent = 'Camera stopped.';
+      detectorInfo.textContent = 'Head direction: center';
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startCamera);
+    document.getElementById('stopBtn').addEventListener('click', stopCamera);
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex += 1;
+      updateQuizUI();
+    });
+
+    restartBtn.addEventListener('click', () => {
+      currentIndex = 0;
+      score = 0;
+      restartBtn.style.display = 'none';
+      updateQuizUI();
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (locked) return;
+      if (event.key === 'ArrowLeft') answer('left');
+      if (event.key === 'ArrowRight') answer('right');
+    });
+
+    updateQuizUI();
+  </script>
 </body>
 </html>
